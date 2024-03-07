@@ -257,17 +257,20 @@ function goHero() {
 
 function transform() {
     video.src = VIDEOS[alien as keyof typeof VIDEOS]
-    video.play()
+    video.load()
 
-    // transition in
-    gsap.to(".overlay", {
-        opacity: 0,
-        duration: 0.4,
-        delay: 0.5,
+    video.addEventListener("canplay", () => {
+        video.play()
+
+        // Fade out the overlay once the video starts playing
+        gsap.to(".overlay", {
+            opacity: 0,
+            duration: 0.4,
+        })
+
+        // Handle video transition out
+        video.addEventListener("timeupdate", videoTransitionOut)
     })
-
-    // transition out
-    video.addEventListener("timeupdate", videoTransitionOut)
 
     setWatchColor("white")
 
