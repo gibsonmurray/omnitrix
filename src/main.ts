@@ -13,7 +13,7 @@ const ALIENS = [
     "wildmutt",
     "xlr8",
 ]
-const imagesUrl = "./src/assets/images/"
+const imagesUrl = "./public/images/"
 const ALIEN_IMAGES = {
     diamondhead: `${imagesUrl}diamondhead.svg`,
     fourarms: `${imagesUrl}fourarms.svg`,
@@ -26,7 +26,7 @@ const ALIEN_IMAGES = {
     wildmutt: `${imagesUrl}wildmutt.svg`,
     xlr8: `${imagesUrl}xlr8.svg`,
 }
-const soundsUrl = "./src/assets/sounds/"
+const soundsUrl = "./public/sounds/"
 const SOUNDS = {
     activation: `${soundsUrl}activation.mp3`,
     depleteTimeout: `${soundsUrl}deplete-timeout.mp3`,
@@ -41,7 +41,7 @@ const SOUNDS = {
     twist5: `${soundsUrl}twist-5.mp3`,
     twist6: `${soundsUrl}twist-6.mp3`,
 }
-const videosUrl = "./src/assets/videos/"
+const videosUrl = "./public/videos/"
 const VIDEOS = {
     diamondhead: `${videosUrl}diamondhead.mp4`,
     fourarms: `${videosUrl}fourarms.mp4`,
