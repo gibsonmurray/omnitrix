@@ -23,6 +23,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .omnitrix {
@@ -244,4 +245,31 @@ body {
     height: 100vh;
     object-fit: cover;
     z-index: 9999;
+}
+
+.bg-video {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .fg-video {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        filter: blur(20px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .hero-bg {
+            position: absolute;
+            object-fit: cover;
+            width: 200%;
+            height: 200%;
+        }
+    }
 }

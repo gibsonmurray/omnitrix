@@ -13,7 +13,7 @@ const ALIENS = [
     "wildmutt",
     "xlr8",
 ]
-const imagesUrl = "./images/" // dev "./public/images/"
+const imagesUrl = "./images/"
 const ALIEN_IMAGES = {
     diamondhead: `${imagesUrl}diamondhead.svg`,
     fourarms: `${imagesUrl}fourarms.svg`,
@@ -26,7 +26,7 @@ const ALIEN_IMAGES = {
     wildmutt: `${imagesUrl}wildmutt.svg`,
     xlr8: `${imagesUrl}xlr8.svg`,
 }
-const soundsUrl = "./sounds/" // dev "./public/images/"
+const soundsUrl = "./sounds/"
 const SOUNDS = {
     activation: `${soundsUrl}activation.mp3`,
     depleteTimeout: `${soundsUrl}deplete-timeout.mp3`,
@@ -41,7 +41,7 @@ const SOUNDS = {
     twist5: `${soundsUrl}twist-5.mp3`,
     twist6: `${soundsUrl}twist-6.mp3`,
 }
-const videosUrl = "./videos/" // dev "./public/images/"
+const videosUrl = "./videos/"
 const VIDEOS = {
     diamondhead: `${videosUrl}diamondhead.mp4`,
     fourarms: `${videosUrl}fourarms.mp4`,
@@ -55,6 +55,21 @@ const VIDEOS = {
     xlr8: `${videosUrl}xlr8.mp4`,
 }
 
+const YTUrlPrefix = "https://www.youtube.com/embed/"
+const YTUrlSuffix = "&controls=0&autoplay=1&loop=1&mute=1"
+const YT_VIDEOS = {
+    diamondhead: `${YTUrlPrefix}nhsODdc9_6U?si=vBVhJPy6_qBzBTO7&start=35${YTUrlSuffix}`,
+    fourarms: `${YTUrlPrefix}WKTybGFTi2Q?si=BpvQcoelnwTpgqQs&start=57${YTUrlSuffix}`,
+    ghostfreak: `${YTUrlPrefix}I_xn1l2kkwU?si=G66ks2vjdeaCULDL&start=27${YTUrlSuffix}`,
+    greymatter: `${YTUrlPrefix}6PwFIAJhi68?si=9ZoJAt8QjaxvjGtL&start=23${YTUrlSuffix}`,
+    heatblast: `${YTUrlPrefix}XcS4WFPkEzA?si=pv4Oerx6BLLpuHOG&start=24${YTUrlSuffix}`,
+    ripjaws: `${YTUrlPrefix}wgBBpYoJ9rA?si=qJapuVO6TZA1VRy6&start=41${YTUrlSuffix}`,
+    stinkfly: `${YTUrlPrefix}Lburuz2Tjlo?si=GOr41JgO8umo0DXi&start=10${YTUrlSuffix}`,
+    upgrade: `${YTUrlPrefix}7phs8Mdut3Q?si=uJ6qOKdBMLssJRvJ&start=16${YTUrlSuffix}`,
+    wildmutt: `${YTUrlPrefix}qdE7ZMlIV8o?si=g6fgg-h3FWMmWa5C&start=105${YTUrlSuffix}`,
+    xlr8: `${YTUrlPrefix}wHMMfAOHo7g?si=WBIoWkLGuk5aHU2X&start=174${YTUrlSuffix}`,
+}
+
 /* ---*--- DOM GLOBALS ---*--- */
 
 const activateBtn: HTMLButtonElement = document.querySelector(".activate-btn")!
@@ -62,6 +77,7 @@ const watchFace: HTMLElement = document.querySelector(".alien-select")!
 const dots: NodeListOf<HTMLElement> = document.querySelectorAll(".dot")!
 const btnTop: HTMLElement = document.querySelector(".activate-btn > .top")!
 const video: HTMLVideoElement = document.querySelector(".transformation-video")!
+const heroBG: HTMLVideoElement = document.querySelector(".hero-bg")!
 const overlay: HTMLElement = document.querySelector(".overlay")!
 const alienImage: HTMLImageElement = document.querySelector(".alien")!
 
@@ -91,21 +107,26 @@ let alien = ALIENS[alienIdx]
 /* ---*--- EVENT LISTENERS & USER INTERACTIONS ---*--- */
 
 activateBtn.addEventListener("mousedown", () => {
-    gsap.to(".activate-btn > .top", {
-        y: -10,
-        duration: 0.15,
-    })
+    activateBtnDown()
 })
 
 activateBtn.addEventListener("mouseup", () => {
-    gsap.to(".activate-btn > .top", {
-        y: 0,
-        duration: 0.15,
-    })
-    activate()
+    activateBtnUp()
 })
 
-window.addEventListener(
+document.addEventListener("keydown", (e) => {
+    if ((e.key === " " || e.key === "ArrowUp") && recharged) {
+        activateBtnPress()
+    } else if (e.key === "ArrowLeft" && active) {
+        twistCounterClockWise()
+    } else if (e.key === "ArrowRight" && active) {
+        twistClockWise()
+    } else if ((e.key === "Enter" || e.key === "ArrowDown") && active) {
+        goHero()
+    }
+})
+
+document.addEventListener(
     "wheel",
     (event) => {
         event.preventDefault() // no normal page scroll
@@ -126,11 +147,6 @@ window.addEventListener(
             } else {
                 twistCounterClockWise()
             }
-            alien = ALIENS[alienIdx]
-            alienImage.src = ALIEN_IMAGES[alien as keyof typeof ALIEN_IMAGES]
-            twistSound.src =
-                SOUNDS[`twist${(++soundIdx % 6) + 1}` as keyof typeof SOUNDS]
-            twistSound.play()
 
             accumulatedScroll = 0
         }
@@ -141,6 +157,14 @@ window.addEventListener(
 watchFace.addEventListener("click", () => {
     if (active && recharged) goHero()
 })
+
+// document.addEventListener("visibilitychange", function () {
+//     if (document.hidden) {
+//         video.pause()
+//     } else {
+//         video.play()
+//     }
+// })
 
 /* ---*--- MAJOR EVENTS ---*--- */
 
@@ -209,6 +233,7 @@ function activateAnimation() {
 
 function goHero() {
     active = false
+    recharged = false
     hoverAudio1.pause()
     hoverAudio1.currentTime = 0
     hoverAudio2.pause()
@@ -273,6 +298,9 @@ function transform() {
     })
 
     setWatchColor("white")
+    gsap.set(".base, .cylinder, .activate-btn, .dots", {
+        opacity: 0,
+    })
 
     video.onended = () => {
         gsap.timeline()
@@ -283,7 +311,7 @@ function transform() {
                 opacity: 0,
                 duration: 0.4,
             })
-        timeout(3000)
+        timeout(10000)
     }
 }
 
@@ -303,7 +331,11 @@ function timeout(duration: number) {
                 opacity: 1,
                 duration: 0.4,
             })
+            .set(".base, .cylinder, .activate-btn, .dots", {
+                opacity: 1,
+            })
             .call(() => {
+                heroBG.src = ""
                 setWatchColor("red")
             })
             .to(".overlay", {
@@ -315,7 +347,6 @@ function timeout(duration: number) {
                 display: "none",
             })
             .call(() => {
-                recharged = false
                 recharge(3000)
             })
     }, duration)
@@ -363,6 +394,7 @@ function twistClockWise() {
         rotate,
     })
     alienIdx = (alienIdx + 1) % ALIENS.length
+    twist()
 }
 
 function twistCounterClockWise() {
@@ -371,6 +403,7 @@ function twistCounterClockWise() {
         rotate,
     })
     alienIdx = (alienIdx - 1 + ALIENS.length) % ALIENS.length
+    twist()
 }
 
 function videoTransitionOut() {
@@ -382,6 +415,7 @@ function videoTransitionOut() {
             duration: 0.4,
             delay: 0.5,
         })
+        heroBG.src = YT_VIDEOS[alien as keyof typeof YT_VIDEOS]
     }
 }
 
@@ -410,4 +444,40 @@ function setWatchColor(color: string) {
         dot.dataset.color = color
     })
     btnTop.dataset.color = color
+}
+
+function activateBtnDown() {
+    gsap.to(".activate-btn > .top", {
+        y: -10,
+        duration: 0.15,
+    })
+}
+
+function activateBtnUp() {
+    gsap.to(".activate-btn > .top", {
+        y: 0,
+        duration: 0.15,
+    })
+    activate()
+}
+
+function activateBtnPress() {
+    gsap.timeline()
+        .to(".activate-btn > .top", {
+            y: -10,
+            duration: 0.15,
+        })
+        .to(".activate-btn > .top", {
+            y: 0,
+            duration: 0.15,
+        })
+    activate()
+}
+
+function twist() {
+    alien = ALIENS[alienIdx]
+    alienImage.src = ALIEN_IMAGES[alien as keyof typeof ALIEN_IMAGES]
+    twistSound.src =
+        SOUNDS[`twist${(++soundIdx % 6) + 1}` as keyof typeof SOUNDS]
+    twistSound.play()
 }
