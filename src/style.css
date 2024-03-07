@@ -1,0 +1,247 @@
+:root {
+    --black: #161616;
+    --gray: #393939;
+    --gray-shadow: #1e1e1e;
+    --light-gray: #717171;
+    --light-gray-shadow: #383838;
+    --white: #e9e8e6;
+    --white-shadow: #a6a6a6;
+    --green: #1cec0a;
+    --red: #d10e0e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.omnitrix {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+
+    .base {
+        position: absolute;
+        width: 400px;
+    }
+
+    .cylinder {
+        position: absolute;
+        width: 228px;
+        transform: translateY(-30px);
+    }
+
+    .activate-btn {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transform: translateY(114px) rotateX(-30deg);
+        cursor: pointer;
+
+        .top {
+            position: absolute;
+            aspect-ratio: 1;
+            width: 56px;
+            border-radius: 9999px;
+            border: solid 10px var(--light-gray);
+        }
+
+        .top[data-color="green"] {
+            background-color: var(--green);
+        }
+
+        .top[data-color="red"] {
+            background-color: var(--red);
+        }
+
+        .top[data-color="white"] {
+            background-color: var(--white);
+        }
+
+        .side {
+            position: absolute;
+            aspect-ratio: 1;
+            width: 56px;
+            border-radius: 9999px;
+            background-color: var(--white-shadow);
+            transform: translateY(-10px);
+        }
+    }
+
+    .face {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 190px;
+        aspect-ratio: 1;
+        transform: translateY(-60px) rotateX(20deg);
+
+        .dial {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 1;
+            width: 190px;
+            border-radius: 9999px;
+            box-shadow: 0 -6px 0 8px var(--light-gray-shadow),
+                0 -6px 0 18px var(--gray-shadow), 0 0 0 32px var(--light-gray);
+
+            .dots {
+                position: absolute;
+                top: -6px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 140%;
+                height: 100%;
+
+                .dot-wrapper {
+                    position: absolute;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+
+                    .dot {
+                        position: absolute;
+                        aspect-ratio: 1;
+                        width: 24px;
+                        border-radius: 9999px;
+                        border: solid var(--gray) 4px;
+                        top: -38px;
+                    }
+
+                    .dot[data-color="green"] {
+                        background-color: var(--green);
+                    }
+
+                    .dot[data-color="red"] {
+                        background-color: var(--red);
+                    }
+
+                    .dot[data-color="white"] {
+                        background-color: var(--white);
+                    }
+                }
+
+                .dot-wrapper:nth-child(1) {
+                    rotate: 0deg;
+                }
+                .dot-wrapper:nth-child(2) {
+                    rotate: 90deg;
+                }
+                .dot-wrapper:nth-child(3) {
+                    rotate: 180deg;
+                }
+                .dot-wrapper:nth-child(4) {
+                    rotate: 270deg;
+                }
+            }
+        }
+
+        .alien-select {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            border-radius: 9999px;
+            overflow: hidden;
+            cursor: pointer;
+
+            .triangle {
+                position: absolute;
+                width: 115%;
+                height: 115%;
+                background-color: var(--light-gray);
+                border: solid 10px var(--black);
+            }
+
+            .tri-left {
+                transform: translateX(-170px) rotate(45deg);
+            }
+
+            .tri-right {
+                transform: translateX(170px) rotate(45deg);
+            }
+
+            .diamond {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                height: 0%;
+                width: 0%;
+                background-color: var(--green);
+                border: solid 10px var(--black);
+                rotate: 45deg;
+
+                .alien {
+                    transform: rotate(-45deg);
+                    opacity: 0;
+                }
+            }
+        }
+
+        .alien-select[data-color="green"] {
+            background-color: var(--green);
+        }
+
+        .alien-select[data-color="red"] {
+            background-color: var(--red);
+        }
+
+        .alien-select[data-color="white"] {
+            background-color: var(--white);
+        }
+    }
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    opacity: 0;
+}
+
+.overlay[data-color="green"] {
+    background-color: var(--green);
+}
+
+.overlay[data-color="red"] {
+    background-color: var(--red);
+}
+
+.transformation-video {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: 9999;
+}
