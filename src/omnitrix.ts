@@ -260,6 +260,16 @@ function goHero() {
             opacity: 1,
             duration: 0.2,
         })
+        .to(
+            "nav",
+            {
+                opacity: 0,
+            },
+            "<"
+        )
+        .set("nav", {
+            display: "none",
+        })
         .set(".transformation-video", {
             display: "block",
         })
@@ -345,6 +355,12 @@ function timeout(duration: number) {
             })
             .set(".overlay", {
                 display: "none",
+            })
+            .set("nav", {
+                display: "flex",
+            })
+            .to("nav", {
+                opacity: 1,
             })
             .call(() => {
                 recharge(3000)

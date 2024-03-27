@@ -24,6 +24,113 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    font-family: sans-serif;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    gap: 20px;
+    padding: 30px;
+
+    .icon {
+        position: relative;
+        cursor: pointer;
+        height: 30px;
+        stroke: var(--gray);
+    }
+}
+
+.tooltip {
+    top: 75px;
+    right: 30px;
+    position: absolute;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 300px;
+    background-color: var(--gray);
+    border-radius: 8px;
+    opacity: 0;
+    color: var(--white);
+    z-index: 1;
+
+    .tooltip-arrow {
+        top: -16px;
+        position: absolute;
+        width: 20px;
+        fill: var(--gray);
+        transition: all 0.2s;
+    }
+
+    .tooltip-box {
+        position: absolute;
+        top: -60px;
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+    }
+
+    .text {
+        width: 100%;
+    }
+
+    hr {
+        border: solid 1px var(--light-gray);
+        margin: 10px 0 10px 0;
+    }
+
+    h5 {
+        margin: 5px 0 5px 0;
+    }
+
+    p {
+        margin-bottom: 14px;
+    }
+
+    .code {
+        font-family: monospace;
+        background-color: var(--light-gray);
+        padding: 3px 6px;
+        border-radius: 5px;
+    }
+
+    .tooltip-text {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+        gap: 10px;
+    }
+
+    .info-text {
+        text-align: center;
+
+        p {
+            line-height: 26px;
+            margin-bottom: -6px;
+        }
+    }
+
+    .prof-pic {
+        height: 100px;
+        border-radius: 100%;
+    }
+
+    .portfolio-link {
+        color: var(--black);
+        text-decoration: none;
+        background-color: var(--green);
+        border-radius: 9999px;
+        padding: 5px 10px;
+    }
 }
 
 .omnitrix {
@@ -272,4 +379,8 @@ body {
             height: 200%;
         }
     }
+}
+
+.cache-video {
+    display: none;
 }
