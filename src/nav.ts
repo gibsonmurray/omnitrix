@@ -89,7 +89,7 @@ const text = {
             </span>
             <img
                 class="prof-pic"
-                src="./images/prof-pic.png"
+                src="./images/prof-pic.webp"
                 alt="Gibson Profile Image"
             />
             
